@@ -32,6 +32,40 @@
   </p>
 </div>
 
+<!-- TABLE OF CONTENTS -->
+<details>
+  <summary>Table of Contents</summary>
+  <ol>
+    <li>
+      <a href="#ethernet-setup">Ethernet Setup</a>
+       <ul>
+        <li><a href="#creating-a-project">Creating a Project</a></li>
+        <li><a href="#clock-configuration">Clock Configuration</a></li>
+        <li><a href="#timer-configuration">Timer Configuration</a></li>
+        <li><a href="#ethernet-configuration">Ethernet Configuration</a></li>
+        <li><a href="#lwip-configuration">LWIP Configuration</a></li>
+      </ul>
+    </li>
+    <li>
+      <a href="#software-setup">Software Setup</a>
+      <ul>
+        <li><a href="#tcp-server">TCP Server</a></li>
+        <li><a href="#tcp-client">TCP Client</a></li>
+      </ul>
+    </li>
+    <li>
+      <a href="#ethernet-connection">Ethernet Connection</a>
+      <ul>
+        <li><a href="#tcp-server-connection">TCP Server Connection</a></li>
+        <li><a href="#tcp-client-connection">TCP Client Connection</a></li>
+      </ul>
+    </li>
+    <li><a href="#review">Review</a></li>
+  </ol>
+</details>
+
+
+
 <!-- MARKDOWN LINKS & IMAGES -->
 <!-- https://www.markdownguide.org/basic-syntax/#reference-style-links -->
 
