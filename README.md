@@ -21,14 +21,14 @@
   <p align="center">
     TCP/IP Server and Client Example without Memory Config on NUCLEO-F429ZI 
     <br />
-    <a href="https://github.com/arslanalperen/UART-DMA-FIFO"><strong>Explore the docs »</strong></a>
+    <a href="https://github.com/arslanalperen/TCP-IP-Server-Client"><strong>Explore the docs »</strong></a>
     <br />
     <br />
-    <a href="https://github.com/arslanalperen/UART-DMA-FIFO">View Demo</a>
+    <a href="https://github.com/arslanalperen/TCP-IP-Server-Client">View Demo</a>
     ·
-    <a href="https://github.com/arslanalperen/UART-DMA-FIFO/issues">Report Bug</a>
+    <a href="https://github.com/arslanalperen/TCP-IP-Server-Client/issues">Report Bug</a>
     ·
-    <a href="https://github.com/arslanalperen/UART-DMA-FIFO/issues">Request Feature</a>
+    <a href="https://github.com/arslanalperen/TCP-IP-Server-Client/issues">Request Feature</a>
   </p>
 </div>
 
