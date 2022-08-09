@@ -158,6 +158,54 @@ In the `Checksum` section, the `CHECKSUM_BY_HARDWARE` option should be `Enabled`
 
 The remaining settings are left as default.
 
+# Software Setup
+
+## TCP Server
+
+Sample project files include `tcpServerRAW.c` and `tcpServerRAW.h` files. These files contain basic functions to be used for TCP ethernet server. Functions are written by `ST` and files are edited by `ControllersTech`. The code has been finalized in the sample project by making some desired additions.
+
+`tcpServerRAW.h` should be added in the `Private Includes` section of the main code.
+
+<div align="center"> <img src="Images/include-header.png" alt="Figure 18"> </div>
+
+`extern struct netif gnetif` code should be added to `Private Define` section. The struct, which contains the Ethernet-related configurations, is thus callable in the main code.
+
+<div align="center"> <img src="Images/netif-call.png" alt="Figure 19"> </div>
+
+TCP server and TIM1 must be init within the main function. It will be healthier to init the timer after the TCP server is inited.
+
+<div align="center"> <img src="Images/init-timer-server.png" alt="Figure 20"> </div>
+
+The `ethernetif_input(&gnetif)` and `sys_check_timeouts` functions must be called within the while loop inside the Main function. The `ethernetif_input(&gnetif)` function takes ethernet configurations with `gnetif` as input and listens on the ethernet port. The `sys_check_timeouts` function calls the timeout handler when the timeout expires.
+
+<div align="center"> <img src="Images/while-one.png" alt="Figure 21"> </div>
+
+The arrangements in the main code are completed at this point. To better understand the functions, the file `tcpServerRAW.c` can be examined. Includes and structures are defined in the beginning. The `tcp_server_states` enum is where the current state definitions of the ethernet protocol are kept. The `tcp_server_struct` is the structure where the current connection information is kept directly.
+
+<div align="center"> <img src="Images/includes-and-structs.png" alt="Figure 22"> </div>
+
+There are prototypes of the functions defined in the continuation of the code.
+
+<div align="center"> <img src="Images/funcs-prototypes.png" alt="Figure 23"> </div>
+
+The definition of the timer callback function is made in the `tcpServerRAW.c` file. The timer enters the callback function once per second. Data printing to the Ethernet port will be done within the callback function. A char array is defined at the beginning of the function. A string is assigned to the char array defined using sprintf, and the string length is returned to the variable named "len".
+
+In cases where the counter value is not 0, pBuf is allocated in a size equal to the string length. The buffer containing the string is assigned to the region allocated with the `pbuf_take` function. Afterwards, the `tcp_server_send` function is called and the data is sent to the ethernet port, and then pBuf is released with the `pbuf_free` function.
+
+<div align="center"> <img src="Images/tim-callback.png" alt="Figure 24"> </div>
+
+The `tcp_server_init` function can be examined. At the beginning of the function, a pointer object named `tpcb` is created from the `tcp_pcb` structure. This object is initialized with the `tcp_new` function. It has `err_t` type error codes. It is defined with typedef. An object of type `ip_addr_t` named `myIPADDR` is defined. This object holds the IP address information. In the next line, the desired IP address values are defined to the object with the `IP_ADDR4` function. The IP address value given here must be the same as the IP value set in the Ethernet configuration section. A connection has been established with the port and IP information provided with the `tcp_bind` function. The returned error code is assigned to the `err` variable. If the returned error code is `ERR_OK`, TCP is put into listening for the pcb and LwIP is initialized by calling the `tcp_accept` function. If the error code is not `ERR_OK`, the allocated memory has been released.
+
+<div align="center"> <img src="Images/tcp-server-init-func.png" alt="Figure 25"> </div>
+
+The `tcp_server_accept` function can be examined. In `err_t` type, `ret_err` object has error status and `es` pointer has ethernet configurations in `tcp_server_struct` type are defined. The `LWIP_UNUSED_ARG` function is used so that unused objects do not cause problems during compilation. The `tcp_setprio` function is called to init Ethernet configurations and assign priorities. The `mem_malloc` function is used to allocate as much space as `tcp_server_struct` in RAM.
+
+<div align="center"> <img src="Images/tcp-server-accept-func.png" alt="Figure 25"> </div>
+
+If the `es` object is not NULL and the required space can be allocated in RAM, the code goes inside the if block. Otherwise it will go inside the else block. In case of entering the if block, necessary assignments are made to the `es` object and the functions tcp_arg, tcp_recv, tcp_err and tcp_poll are called respectively. The purposes of the functions are explained in the relevant parts of the report. At the end of the block, the `ret_err` variable is assigned to indicate that no problems were encountered. In case of entering the else block, the tcp connection is terminated by calling the `tcp_server_connection_close` function. Finally, `ERR_MEM` is assigned to the `ret_err` variable. This means that there is a problem in memory allocation and the connection is terminated.
+
+---Sayfa 15---
+
 <!-- MARKDOWN LINKS & IMAGES -->
 <!-- https://www.markdownguide.org/basic-syntax/#reference-style-links -->
 
